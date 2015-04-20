@@ -16,8 +16,27 @@ namespace ContosoUniversity.Controllers
         private SchoolContext db = new SchoolContext();
 
         // GET: Student
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
+            ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date'"; 
+            var students = from s in db.Students
+                           select s;
+        switch (sortOrder)
+        {
+            case "name_desc":
+                students = students.OrderByDescending (s => s.LastName);
+                break;
+            case "Date":
+                students = students.OrderBy(s => s.EnrollmentDate);
+                break;
+            case "date_desc":
+                students = students.OrderByDescending(s => s.EnrollmentDate);
+                break;
+            default:
+                students = students.OrderBy(s => s.LastName);
+        }
+        
             return View(db.Students.ToList());
         }
 
@@ -128,9 +147,16 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Student student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
+            try
+            {
+                Student student = db.Students.Find(id);
+                db.Students.Remove(student);
+                db.SaveChanges();
+            }
+            catch (DataException /* dex */)
+            {
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+            }
             return RedirectToAction("Index");
         }
 
