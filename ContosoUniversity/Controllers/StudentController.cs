@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using ContosoUniversity.DAL;
 using ContosoUniversity.Models;
+using PagedList;
 
 namespace ContosoUniversity.Controllers
 {
@@ -16,12 +17,18 @@ namespace ContosoUniversity.Controllers
         private SchoolContext db = new SchoolContext();
 
         // GET: Student
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string searchString)
         {
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             ViewBag.DateSortParm = sortOrder == "Date" ? "date_desc" : "Date"; 
             var students = from s in db.Students
                            select s;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                students = students.Where(s => s.LastName.ToUpper().Contains(searchString.ToUpper())
+                                                                              ||
+                s.FirstMidName.ToUpper().Contains(searchString.ToUpper()));
+            }
             switch (sortOrder)
             {
                 case "name_desc":
