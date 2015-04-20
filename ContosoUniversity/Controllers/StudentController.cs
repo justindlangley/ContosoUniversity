@@ -35,6 +35,7 @@ namespace ContosoUniversity.Controllers
                 break;
             default:
                 students = students.OrderBy(s => s.LastName);
+                break;
         }
         
             return View(db.Students.ToList());
