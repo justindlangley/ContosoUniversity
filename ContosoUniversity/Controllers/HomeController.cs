@@ -30,6 +30,12 @@ namespace ContosoUniversity.Controllers
             return View(data.ToList());
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+            base.Dispose(disposing);
+        }
+
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
