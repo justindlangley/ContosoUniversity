@@ -13,7 +13,7 @@ using ContosoUniversity.Logging;
 
 namespace ContosoUniversity.DAL
 {
-    public class SchoolInterceptorLogging
+    public class SchoolInterceptorLogging : DbCommandInterceptor
     {
         private ILogger _logger = new Logger();
         private readonly Stopwatch _stopwatch = new Stopwatch();

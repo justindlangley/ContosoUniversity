@@ -5,7 +5,7 @@ using System.Web;
 
 namespace ContosoUniversity.Logging
 {
-    public class ILogger
+    public interface ILogger
     {
         void Information(string message);
         void Information(string fmt, params object[] vars);
