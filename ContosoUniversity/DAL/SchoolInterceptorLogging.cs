@@ -49,19 +49,19 @@ namespace ContosoUniversity.DAL
                 _stopwatch.Restart();
             }
 
-        public override void NonQueryExecuting(DbCommand command,
+        public override void NonQueryExecuted(DbCommand command, 
             DbCommandInterceptionContext<int> interceptionContext)
-            {
-                _stopwatch.Stop();
-                if (interceptionContext.Exception != null)
+        {
+            _stopwatch.Stop();    
+            if (interceptionContext.Exception != null)
                 {
-                    _logger.Error(interceptionContext.Exception, "Error executing command: {0}",
-                        command.CommandText);
+                 _logger.Error(interceptionContext.Exception, 
+                 "Error executing command: {0}", command.CommandText);
                 }
                 else
                 {
-                    _logger.TraceApi("SQL Database", "SchoolInterceptor.NonQueryExecuted",
-                        _stopwatch.Elapsed, "Command: {0} ", command.CommandText);
+                _logger.TraceApi("SQL Database", "SchoolInterceptor.NonQueryExecuted",
+                _stopwatch.Elapsed, "Command: {0} ", command.CommandText);
                 }
                 base.NonQueryExecuted(command, interceptionContext);
                 

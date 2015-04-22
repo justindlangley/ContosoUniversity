@@ -32,8 +32,33 @@ namespace ContosoUniversity.DAL
             if (throwTransientErrors && _counter <4)
             {
                 _logger.Information("Returning transient errors for command: {0}", command.CommandText);
+                _counter++;
+                interceptionContext.Exception = CreateDummySqlException();
             }
-
         }
+
+        private SqlException CreateDummySqlException()
+        {
+            var sqlErrorNumber = 20;
+
+            var sqlErrorCtor = typeof(SqlError).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)
+                .Where(c => c.GetParameters().Count()  == 7).Single();
+            var sqlError = sqlErrorCtor.Invoke(new object[] {sqlErrorNumber, 
+                (byte)0, (byte)0, "","", 1});
+
+            var ErrorCollection = 
+                Activator.CreateInstance(typeof(SqlErrorCollection), true);
+            var addMethod = typeof(SqlErrorCollection).GetMethod("Add", 
+                BindingFlags.Instance | BindingFlags.NonPublic);
+            addMethod.Invoke(ErrorCollection, new[] {sqlError});
+            var sqlExceptionCtor = typeof(SqlException).GetConstructors(BindingFlags.Instance | BindingFlags.NonPublic)
+                .Where(c => c.GetParameters().Count() == 4).Single();
+
+            var sqlException = (SqlException)sqlExceptionCtor.Invoke(new object [] {"Dummy", ErrorCollection, 
+                null, Guid.NewGuid()});
+
+            return sqlException;
+        }
+        
     }
 }
