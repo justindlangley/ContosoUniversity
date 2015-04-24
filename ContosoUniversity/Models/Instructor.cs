@@ -13,7 +13,7 @@ namespace ContosoUniversity.Models
         public int ID { get; set; }
 
         [Required]
-        [Display(Name = "Last Name"]
+        [Display(Name = "Last Name")]
         [StringLength(50)]
         public string LastName {get; set;}
 
@@ -29,7 +29,7 @@ namespace ContosoUniversity.Models
         public DateTime HireDate { get; set; }
 
         [Display(Name = "Full Name")]
-        pulic string FullName
+        public string FullName
         {
             get {return LastName + ", " + FirstMidName;}
         }
