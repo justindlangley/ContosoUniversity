@@ -166,5 +166,12 @@ namespace ContosoUniversity.Migrations
             //    );
             //
         }
+        void AddOrUpdateInstructor(SchoolContext context, string courseTitle, string instructorName)
+        {
+            var crs = context.Courses.SingleOrDefault(c => c.Title == courseTitle);
+            var inst = crs.Instructors.SingleOrDefault(i => i.LastName == instructorName);
+            if (inst==null)
+                crs.Instructors.Add(context.Instructors.Single(i=>i.LastName == instructorName));
+        }
     }
 }
