@@ -35,7 +35,7 @@ namespace ContosoUniversity.Migrations
                 EnrollmentDate = DateTime.Parse("2011-09-01")},
                 new Student { FirstMidName = "Laura", LastName = "Norman",
                 EnrollmentDate = DateTime.Parse("2013-09-01")},
-                new Student { FirstMidName = "NNino", LastName = "Olivetto",
+                new Student { FirstMidName = "Nino", LastName = "Olivetto",
                 EnrollmentDate = DateTime.Parse("2005-08-11")},
             };
             students.ForEach(s => context.Students.AddOrUpdate(p => p.LastName, s));
@@ -64,13 +64,13 @@ namespace ContosoUniversity.Migrations
 
             var courses = new List<Course>
             {
-                new Course {CourseID = 1050, Title="Chemistry", Credits=3, DepartmentID = departments.Single(s=> s.Name=="Engineering").DepartmentID, Instructors = new List<Instructor>()},
-                new Course {CourseID = 4022, Title="Microeconomics", Credits=3, DepartmentID = departments.Single(s=> s.Name=="Economics").DepartmentID, Instructors = new List<Instructor>()}, 
-                new Course {CourseID = 4041, Title="Macroeconomics", Credits=3, DepartmentID = departments.Single(s=> s.Name=="Economics").DepartmentID, Instructors = new List<Instructor>()},
-                new Course {CourseID = 1045, Title="Calculus", Credits=4, DepartmentID = departments.Single(s=> s.Name=="Mathematics").DepartmentID, Instructors = new List<Instructor>()},
-                new Course {CourseID = 3141, Title="Trigonometry", Credits=4, DepartmentID = departments.Single(s=> s.Name=="Mathematics").DepartmentID, Instructors = new List<Instructor>()},
-                new Course {CourseID = 2021, Title="Composition", Credits=3, DepartmentID = departments.Single(s=> s.Name=="English").DepartmentID, Instructors = new List<Instructor>()}, 
-                new Course {CourseID = 2042, Title="Literature", Credits=4, DepartmentID = departments.Single(s=> s.Name=="English").DepartmentID, Instructors = new List<Instructor>()},
+                new Course {CourseID = 1050, Title = "Chemistry", Credits=3, DepartmentID = departments.Single(s=> s.Name == "Engineering").DepartmentID, Instructors = new List<Instructor>()},
+                new Course {CourseID = 4022, Title = "Microeconomics", Credits=3, DepartmentID = departments.Single(s=> s.Name == "Economics").DepartmentID, Instructors = new List<Instructor>()}, 
+                new Course {CourseID = 4041, Title = "Macroeconomics", Credits=3, DepartmentID = departments.Single(s=> s.Name == "Economics").DepartmentID, Instructors = new List<Instructor>()},
+                new Course {CourseID = 1045, Title = "Calculus", Credits=4, DepartmentID = departments.Single(s=> s.Name == "Mathematics").DepartmentID, Instructors = new List<Instructor>()},
+                new Course {CourseID = 3141, Title = "Trigonometry", Credits=4, DepartmentID = departments.Single(s=> s.Name == "Mathematics").DepartmentID, Instructors = new List<Instructor>()},
+                new Course {CourseID = 2021, Title = "Composition", Credits=3, DepartmentID = departments.Single(s=> s.Name == "English").DepartmentID, Instructors = new List<Instructor>()}, 
+                new Course {CourseID = 2042, Title = "Literature", Credits=4, DepartmentID = departments.Single(s=> s.Name == "English").DepartmentID, Instructors = new List<Instructor>()},
             };
             courses.ForEach(s => context.Courses.AddOrUpdate(p => p.CourseID, s));
             context.SaveChanges();
@@ -87,7 +87,7 @@ namespace ContosoUniversity.Migrations
             AddOrUpdateInstructor(context, "Chemistry", "Kapoor");
             AddOrUpdateInstructor(context, "Chemistry", "Harui");
             AddOrUpdateInstructor(context, "Microeconomics", "Zheng");
-            AddOrUpdateInstructor(context, "Macroeconomcis", "Zheng");
+            AddOrUpdateInstructor(context, "Macroeconomics", "Zheng");
 
             AddOrUpdateInstructor(context, "Calculus", "Fakhouri");
             AddOrUpdateInstructor(context, "Trigonometry", "Harui");
@@ -98,11 +98,13 @@ namespace ContosoUniversity.Migrations
 
             var enrollments = new List<Enrollment>
             {
-                new Enrollment {StudentID=students.Single(s => s.LastName == "Alexander").ID,
+                new Enrollment {
+             StudentID = students.Single(s => s.LastName == "Alexander").ID,
                 CourseID = courses.Single(c => c.Title == "Chemistry").CourseID,
                 Grade=Grade.A
                 },
-                new Enrollment {StudentID=students.Single(s => s.LastName == "Alexander").ID,
+                new Enrollment {
+             StudentID = students.Single(s => s.LastName == "Alexander").ID,
                 CourseID = courses.Single(c => c.Title == "Microeconomics").CourseID,
                 Grade=Grade.C
                 },
@@ -170,7 +172,7 @@ namespace ContosoUniversity.Migrations
         {
             var crs = context.Courses.SingleOrDefault(c => c.Title == courseTitle);
             var inst = crs.Instructors.SingleOrDefault(i => i.LastName == instructorName);
-            if (inst==null)
+            if (inst == null)
                 crs.Instructors.Add(context.Instructors.Single(i=>i.LastName == instructorName));
         }
     }

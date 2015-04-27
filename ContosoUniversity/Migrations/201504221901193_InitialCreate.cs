@@ -16,6 +16,17 @@ namespace ContosoUniversity.Migrations
                         Credits = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.CourseID);
+
+            CreateTable(
+                "dbo.Student",
+                c => new
+                {
+                    ID = c.Int(nullable: false, identity: true),
+                    LastName = c.String(),
+                    FirstMidName = c.String(),
+                    EnrollmentDate = c.DateTime(nullable: false),
+                })
+                .PrimaryKey(t => t.ID);
             
             CreateTable(
                 "dbo.Enrollment",
@@ -32,16 +43,6 @@ namespace ContosoUniversity.Migrations
                 .Index(t => t.CourseID)
                 .Index(t => t.StudentID);
             
-            CreateTable(
-                "dbo.Student",
-                c => new
-                    {
-                        ID = c.Int(nullable: false, identity: true),
-                        LastName = c.String(),
-                        FirstMidName = c.String(),
-                        EnrollmentDate = c.DateTime(nullable: false),
-                    })
-                .PrimaryKey(t => t.ID);
             
         }
         
