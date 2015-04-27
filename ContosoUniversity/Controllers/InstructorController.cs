@@ -25,16 +25,18 @@ namespace ContosoUniversity.Controllers
                 .Include(i => i.Courses.Select(c => c.Department))
                 .OrderBy(i => i.LastName);
 
-            if(id !=null)
+            if (id !=null)
             {
                 ViewBag.InstructorID = id.Value;
-                viewModel.Courses = viewModel.Instructors.Where(i => i.ID == id.Value).Single().Courses;
+                viewModel.Courses = viewModel.Instructors.Where(
+                    i => i.ID == id.Value).Single().Courses;
             }
             if (courseID != null)
             {
                 ViewBag.CourseID = courseID.Value;
                 viewModel.Enrollments = viewModel.Courses.Where(x => x.CourseID == courseID).Single().Enrollments;
             }
+            return View(viewModel);
         }
 
         // GET: Instructor/Details/5
