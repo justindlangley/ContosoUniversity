@@ -9,6 +9,6 @@ namespace ContosoUniversity.ViewModels
     {
         public int CourseID { get; set; }
         public string Title{ get; set; }
-        public int Assigned { get; set;  }
+        public bool Assigned { get; set;  }
     }
 }

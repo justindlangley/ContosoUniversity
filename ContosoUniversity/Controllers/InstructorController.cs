@@ -119,7 +119,7 @@ namespace ContosoUniversity.Controllers
                 { 
                 CourseID = course.CourseID,
                 Title = course.Title,
-          Assigned = instructorCourses.Contains(course.CourseID)
+                Assigned = instructorCourses.Contains(course.CourseID)
                 });
             }
             ViewBag.Courses = viewModel;
@@ -129,14 +129,14 @@ namespace ContosoUniversity.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id, string[] selectedCourses)
+        public ActionResult Edit(int? id, string[] selectedCourses)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             var instructorToUpdate = db.Instructors.Include(i => i.OfficeAssignment)
-            .Include(i=>i.Courses)
+            .Include(i => i.Courses)
             .Where(i => i.ID == id).Single();
 
             if (TryUpdateModel(instructorToUpdate, "", new string[] { "LastName", "FirstMidName", "HireDate", "OfficeAssignment"}))
@@ -209,10 +209,24 @@ namespace ContosoUniversity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Instructor instructor = db.Instructors.Find(id);
+            Instructor instructor = db.Instructors
+                .Include(i => i.OfficeAssignment)
+                .Where(i => i.ID == id)
+                .Single();
+
+            instructor.OfficeAssignment = null;
             db.Instructors.Remove(instructor);
+
+            var department = db.Departments
+                .Where(d => d.InstructorID == id)
+                .SingleOrDefault();
+            if (department != null)
+            {
+                department.InstructorID = null;
+            }
             db.SaveChanges();
             return RedirectToAction("Index");
+
         }
 
         protected override void Dispose(bool disposing)
